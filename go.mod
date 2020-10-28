@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/bwmarrin/discordgo v0.22.0
+	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/karrick/tparse/v2 v2.8.2
 	gorm.io/driver/mysql v1.0.3 // indirect
 	gorm.io/gorm v1.20.5 // indirect

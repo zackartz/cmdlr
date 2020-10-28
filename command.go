@@ -48,11 +48,12 @@ func (c *Command) Trigger(ctx *Ctx) {
 			}
 
 			subCommand.Trigger(&Ctx{
-				Session: ctx.Session,
-				Event:   ctx.Event,
-				Args:    args,
-				Router:  ctx.Router,
-				Command: subCommand,
+				Session:  ctx.Session,
+				Event:    ctx.Event,
+				Args:     args,
+				Router:   ctx.Router,
+				Command:  subCommand,
+				Database: ctx.Database,
 			})
 			return
 		}

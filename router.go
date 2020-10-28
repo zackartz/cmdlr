@@ -114,9 +114,10 @@ func (r *Router) Handler() func(session *discordgo.Session, message *discordgo.M
 
 		for _, m := range r.Middlewares {
 			m.Trigger(Ctx{
-				Session: session,
-				Event:   event,
-				Router:  r,
+				Session:  session,
+				Event:    event,
+				Database: r.Database,
+				Router:   r,
 			})
 		}
 
