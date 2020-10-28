@@ -3,6 +3,7 @@ package cmdlr
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"gorm.io/gorm"
 	"sort"
 	"strings"
 )
@@ -16,6 +17,7 @@ type Router struct {
 	PingHandler      ExecutionHandler
 	jobs             chan job
 	MaxThreads       int
+	Database         *gorm.DB
 	Storage          map[string]*ObjectsMap
 }
 
@@ -91,10 +93,11 @@ func (r *Router) Handler() func(session *discordgo.Session, message *discordgo.M
 
 		if (content == "<@!"+session.State.User.ID+">" || content == "<@"+session.State.User.ID+">") && r.PingHandler != nil {
 			r.PingHandler(&Ctx{
-				Session: session,
-				Event:   event,
-				Args:    ParseArguments(""),
-				Router:  r,
+				Session:  session,
+				Event:    event,
+				Database: r.Database,
+				Args:     ParseArguments(""),
+				Router:   r,
 			})
 			return
 		}
@@ -128,11 +131,12 @@ func (r *Router) Handler() func(session *discordgo.Session, message *discordgo.M
 			isValid, content := StringHasPrefix(content, []string{" ", "\n"}, false)
 			if content == "" || isValid {
 				ctx := &Ctx{
-					Session: session,
-					Event:   event,
-					Args:    ParseArguments(content),
-					Router:  r,
-					Command: cmd,
+					Session:  session,
+					Event:    event,
+					Database: r.Database,
+					Args:     ParseArguments(content),
+					Router:   r,
+					Command:  cmd,
 				}
 
 				r.newJob(ctx, cmd)
